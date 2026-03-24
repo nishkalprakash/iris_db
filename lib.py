@@ -83,11 +83,11 @@ class FileManager:
         if not isinstance(dest, Path):
             dest = Path(dest)
         if not overwrite and dest.exists():
-            self.lg.info(f"File {dest} already exists. Skipping copy.")
+            self.lg.debug(f"File {dest} already exists. Skipping copy.")
             return
         self.ensure_exists(dest.parent)
         shutil.copy2(src, dest)
-        self.lg.info(f"Copied file from {src} to {dest}")
+        self.lg.debug(f"Copied file from {src} to {dest}")
 
 
 
@@ -104,8 +104,8 @@ class MongoJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
             return str(obj)
-        if isinstance(obj, datetime):
-            return obj.isoformat()
+        # if isinstance(obj, datetime):
+        #     return obj.isoformat()
         return super().default(obj)
     
 class MongoJSONDecoder(json.JSONDecoder):
@@ -121,11 +121,11 @@ class MongoJSONDecoder(json.JSONDecoder):
                         obj[key] = ObjectId(value)
                 except Exception:
                     pass
-                try:
-                    # Attempt to convert string to datetime
-                    if 'T' in value and (len(value) >= 19):  # Basic check for ISO format
-                        obj[key] = datetime.fromisoformat(value)
-                except Exception:
-                    pass
+                # try:
+                #     # Attempt to convert string to datetime
+                #     if 'T' in value and (len(value) >= 19):  # Basic check for ISO format
+                #         obj[key] = datetime.fromisoformat(value)
+                # except Exception:
+                #     pass
         return obj
 
