@@ -101,10 +101,10 @@ print(len(feats))
 # %%
 docs = []
 # with IrisDB() as db:
-ds_id = db.find_ds(DS_ID)
-ds_id = DS_ID
+# ds_id = db.find_ds(DS_ID)
+# ds_id = DS_ID
 db = IrisDB(ds_id=DS_ID)
-meta_doc = db.find_one({"ds_id": ds_id})
+meta_doc = db.find_one({"ds_id": DS_ID})
 # %%
 db.coll
 print(meta_doc)
@@ -244,3 +244,6 @@ db.close()
 
 # %%
 len(docs)
+
+# %% Export to jsonl
+# db.export_to_jsonl()

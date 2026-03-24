@@ -104,8 +104,8 @@ class MongoJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
             return str(obj)
-        # if isinstance(obj, datetime):
-        #     return obj.isoformat()
+        if isinstance(obj, datetime):
+            return obj.isoformat()
         return super().default(obj)
     
 class MongoJSONDecoder(json.JSONDecoder):
@@ -121,11 +121,11 @@ class MongoJSONDecoder(json.JSONDecoder):
                         obj[key] = ObjectId(value)
                 except Exception:
                     pass
-                # try:
-                #     # Attempt to convert string to datetime
-                #     if 'T' in value and (len(value) >= 19):  # Basic check for ISO format
-                #         obj[key] = datetime.fromisoformat(value)
-                # except Exception:
-                #     pass
+                try:
+                    # Attempt to convert string to datetime
+                    if 'T' in value and (len(value) >= 19):  # Basic check for ISO format
+                        obj[key] = datetime.fromisoformat(value)
+                except Exception:
+                    pass
         return obj
 
