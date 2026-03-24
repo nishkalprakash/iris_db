@@ -102,7 +102,7 @@ print(len(feats))
 docs = []
 # with IrisDB() as db:
 # ds_id = db.find_ds(DS_ID)
-# ds_id = DS_ID
+ds_id = DS_ID
 db = IrisDB(ds_id=DS_ID)
 meta_doc = db.find_one({"ds_id": DS_ID})
 # %%
@@ -189,7 +189,7 @@ for img_,temp_,mask_ in zip(feats,templates,masks):
     #     "rel_path_": str(img_.relative_to(ORIG_DB_BASE_)),
     #     "path_": str(img_),
     # }
-
+    data = img_.read_text().strip()
     doc = {
         "ds_id": ds_id,
         "person_id": str(person_id),
@@ -203,7 +203,7 @@ for img_,temp_,mask_ in zip(feats,templates,masks):
         "eye": eye,
         "fvs":{
             "feat": {
-                "data":img_.read_text().strip(),
+                "data":data,
                 "path":path_.relative_to(DS_BASE_.parent).as_posix(),
                 "fv_dim":[8,256],
                 "dim":[2048],
@@ -226,7 +226,8 @@ for img_,temp_,mask_ in zip(feats,templates,masks):
                 # "w":256,
                 # "h":8
             }
-        }
+        },
+        'fv':data
         # "fv_specs": meta_doc["img_specs"],
         # "paths": paths,
         # "orig_paths": orig_paths,
